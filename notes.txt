@@ -1,0 +1,18 @@
+create a ssh key
+ssh-keygen -f mykey
+
+
+--connecting to ec2 using 
+ssh 3.94.57.105 -l ubuntu -i ~/Documents/ssh/mykey
+
+--install httpd-apache2
+sudo apt-get update
+sudo apt install apache2 -y
+
+install node
+npm install
+node app.js
+
+setup apache2
+
+netstat -tnlp
