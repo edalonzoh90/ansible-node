@@ -39,18 +39,45 @@
       command: npm install
       args:
         chdir: /home/ubuntu/repos
-      register: out
+      register: outnetstat 
     - debug: 
         var: out.stdout_lines
 
-    - name: "install"
-      command: pm2 start app.js
+    - name: "install pm2"
+      command: pm2 start app.js -f
       args:
         chdir: /home/ubuntu/repos
-      register: out
-    - debug: 
-        var: out.stdout_lines
+#      register: out
+#    - debug: 
+#        var: out.stdout_lines
 
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache2
+
+    - name: apache2 virtualhost on port 5000
+      lineinfile: 
+        path: /etc/apache2/sites-available/000-default.conf  
+        insertafter: ^<VirtualHost \*:80>
+        line: ProxyPass / http://localhost:5000/
+        state: present
+
+    - name: "enable proxy"
+      command: a2enmod proxy
+      args:
+        chdir: /etc/apache2/sites-enabled
+              
+    - name: "enable proxy_http"
+      command: a2enmod proxy_http
+      args:
+        chdir: /etc/apache2/sites-enabled
+      notify:
+        - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
 
 #    - name: "nvm"
 #      shell: >
