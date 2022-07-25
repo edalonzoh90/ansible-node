@@ -3,7 +3,7 @@ ssh-keygen -f mykey
 
 
 --connecting to ec2 using 
-ssh 3.94.57.105 -l ubuntu -i ~/Documents/ssh/mykey
+ssh 3.84.92.132 -l ubuntu -i ~/Documents/ssh/mykey
 
 --install httpd-apache2
 sudo apt-get update
